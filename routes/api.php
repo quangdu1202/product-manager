@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('admins', 'App\Http\Controllers\Admin\AdminController');
-Route::resource('users', 'App\Http\Controllers\User\UserController', ['execpt' => ['create', 'edot']]);
+//Admin
+Route::resource('admins', 'App\Http\Controllers\Admin\AdminController', ['only' => ['index', 'show']]);
 
-Route::resource('products', 'App\Http\Controllers\Product\ProductController');
+//Customer
+Route::resource('customers', 'App\Http\Controllers\Customer\CustomerController', ['only' => ['index', 'show']]);
+
+//Product
+Route::resource('products', 'App\Http\Controllers\Product\ProductController', ['only' => ['index', 'show']]);
+
+//User
+Route::resource('users', 'App\Http\Controllers\User\UserController', ['except' => ['create', 'edit']]);

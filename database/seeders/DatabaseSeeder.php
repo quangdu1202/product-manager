@@ -19,11 +19,9 @@ class DatabaseSeeder extends Seeder
 
         User::truncate();
         Product::truncate();
-        ProductImage::truncate();
 
         User::factory()->count(10)->create();
         Product::factory()->count(30)->create();
-        ProductImage::factory()->count(120)->create();
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
