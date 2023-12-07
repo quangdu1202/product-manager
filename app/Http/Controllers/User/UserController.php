@@ -2,33 +2,35 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
+        $users = User::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->getAll($users);
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+        $data['verified'] = User::UNVERIFIED_USER;
+        $data['verification_token'] = User::generateVerificationCode();
+        $data['admin'] = User::REGULAR_USER;
+
+        $user = User::create($data);
+
+        return $this->getOne($user);
     }
 
     /**
@@ -36,15 +38,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        $user = User::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return $this->getOne($user);
     }
 
     /**
@@ -52,7 +48,33 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+
+        if ($request->has('email') && $user->email != $request->email) {
+            $user->verified = User::UNVERIFIED_USER;
+            $user->verification_token = User::generateVerificationCode();
+            $user->email = $request->email;
+        }
+
+        if ($request->has('password')) {
+            $user->password = bcsqrt($request->password);
+        }
+
+        if ($request->has('admin')) {
+            if ($user->isVerified()) {
+                return $this->errorResponse('Missing permision to perform action', 409);;
+            }
+
+            $user->admin = $request->admin;
+        }
+
+        $user->save();
+
+        return $this->getOne($user);
     }
 
     /**
@@ -60,6 +82,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return $this->getOne($user);
     }
 }
