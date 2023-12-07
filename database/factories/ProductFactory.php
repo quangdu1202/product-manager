@@ -20,6 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
+            'img' => $this->faker->randomElement(array('product1.jpg', 'product2.jpg', 'product3.jpg')),
             'price' => $this->faker->numberBetween(1, 100),
             'description' => $this->faker->paragraph(1)
         ];
