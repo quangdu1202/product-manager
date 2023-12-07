@@ -13,7 +13,7 @@ return [
     |
     */
 
-    //'default' => env('FILESYSTEM_DISK', 'local'),
+    //'default' => env('FILESYSTEM_DISK', 'images'),
     'default' => 'images',
 
     /*
@@ -47,7 +47,7 @@ return [
 
         'images' => [
             'driver' => 'local',
-            'root' => public_path('img'),
+            'root' => public_path('assets/img'),
             'visibility' => 'public',
         ],
 
