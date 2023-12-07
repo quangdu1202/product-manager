@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponser;
+use Dotenv\Exception\ValidationException;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
