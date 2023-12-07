@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\ApiController;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends ApiController
 {
@@ -19,22 +20,6 @@ class ProductController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Product $product)
@@ -42,27 +27,45 @@ class ProductController extends ApiController
         return $this->getOne($product);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
+    public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['img'] = $request->img->store('');
+        $product = Product::create($data);
+
+        return $this->getOne($product);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Product $product)
     {
-        //
+        if ($request->has('name')) {
+            $product->name = $request->name;
+        }
+
+        if ($request->has('img')) {
+            Storage::delete($product->img);
+
+            $product->img = $request->img->store('');
+        }
+
+        if ($request->has('price')) {
+            $product->price = $request->price;
+        }
+
+        if ($request->has('description')) {
+            $product->description = $request->description;
+        }
+
+        $product->save();
+
+        return $this->getOne($product);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
-        //
+        Storage::delete($product->img);
+        $product->delete();
+
+        return $this->getOne($product);
     }
 }

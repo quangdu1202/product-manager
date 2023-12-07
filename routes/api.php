@@ -21,7 +21,7 @@ Route::resource('admins', 'App\Http\Controllers\Admin\AdminController', ['only' 
 Route::resource('customers', 'App\Http\Controllers\Customer\CustomerController', ['only' => ['index', 'show']]);
 
 //Product
-Route::resource('products', 'App\Http\Controllers\Product\ProductController', ['only' => ['index', 'show']]);
+Route::resource('products', 'App\Http\Controllers\Product\ProductController');
 
 //User
-Route::resource('users', 'App\Http\Controllers\User\UserController', ['except' => ['create', 'edit']]);
+Route::resource('users', 'App\Http\Controllers\User\UserController');
