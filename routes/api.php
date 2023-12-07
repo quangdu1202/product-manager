@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('admins', 'App\Http\Controllers\Admin\AdminController');
-Route::resource('users', 'App\Http\Controllers\User\UserController');
+Route::resource('users', 'App\Http\Controllers\User\UserController', ['execpt' => ['create', 'edot']]);
 
 Route::resource('products', 'App\Http\Controllers\Product\ProductController');
